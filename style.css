@@ -1,0 +1,154 @@
+
+/* BHBI REGISTRATION DEMO */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #F1F7F5;
+    color: #183C42;
+}
+
+/* HEADER */
+
+header {
+    background: #123C46;
+    color: white;
+    padding: 40px;
+    text-align: center;
+    border-bottom: 6px solid #31977F;
+}
+
+header h1 {
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+header p {
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: #B9DDD2;
+}
+
+/* MAIN LAYOUT */
+
+main {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 40px;
+    max-width: 1100px;
+    margin: 50px auto;
+    padding: 20px;
+}
+
+/* REGISTRATION FORM */
+
+.registration {
+    background: white;
+    padding: 30px;
+    border-radius: 14px;
+    width: 60%;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+}
+
+.registration h2 {
+    margin-bottom: 22px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* INPUTS */
+
+label {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+input {
+    padding: 13px;
+    border: 1px solid #A9CCC1;
+    border-radius: 7px;
+    font-size: 14px;
+    width: 100%;
+    outline: none;
+}
+
+input:focus {
+    border-color: #31977F;
+    box-shadow: 0 0 4px rgba(49, 151, 127, 0.3);
+}
+
+/* SEARCH */
+
+.search {
+    background: white;
+    padding: 25px;
+    border-radius: 14px;
+    width: 40%;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+}
+
+.search h2 {
+    margin-bottom: 12px;
+    font-size: 21px;
+}
+
+.search p {
+    font-size: 13px;
+    color: #667C7C;
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+/* BUTTONS */
+
+button {
+    border: none;
+    padding: 14px;
+    border-radius: 7px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+#saveButton {
+    background: #123C46;
+    color: white;
+    margin-top: 15px;
+}
+
+#searchButton {
+    background: #31977F;
+    color: white;
+    width: 100%;
+    margin-top: 12px;
+}
+
+button:hover {
+    opacity: 0.88;
+    transform: translateY(-2px);
+}
+
+/* MOBILE */
+
+@media (max-width: 700px) {
+    main {
+        flex-direction: column;
+        margin: 20px auto;
+    }
+
+    .registration,
+    .search {
+        width: 100%;
+    }
+}
