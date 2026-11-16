@@ -109,6 +109,30 @@ input:focus {
     line-height: 1.5;
 }
 
+.search-results {
+    margin-top: 18px;
+    color: #123C46;
+    font-weight: bold;
+}
+
+.students-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 13px;
+}
+
+.students-table th,
+.students-table td {
+    border: 1px solid #dce9e4;
+    padding: 10px;
+    text-align: left;
+}
+
+.students-table th {
+    background: #eaf5f1;
+}
+
 /* BUTTONS */
 
 button {

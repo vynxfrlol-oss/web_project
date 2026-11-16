@@ -3,29 +3,91 @@
 
 const registrationForm = document.getElementById("registrationForm");
 const searchButton = document.getElementById("searchButton");
+const searchInput = document.getElementById("searchInput");
+const searchResults = document.getElementById("searchResults");
+const studentsTableBody = document.getElementById("studentsTableBody");
 
-// SAVE BUTTON
+async function loadStudents(search = "") {
+    try {
+        const response = await fetch(`http://localhost:3000/api/students?search=${encodeURIComponent(search)}`);
+        const students = await response.json();
 
-registrationForm.addEventListener("submit", function(event) {
+        if (!response.ok) {
+            throw new Error(students.message || "Failed to load students");
+        }
+
+        studentsTableBody.innerHTML = "";
+
+        if (!students.length) {
+            studentsTableBody.innerHTML = `
+                <tr>
+                    <td colspan="6">No records found.</td>
+                </tr>
+            `;
+            return;
+        }
+
+        students.forEach(student => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td>${student.registrationNumber || "-"}</td>
+                <td>${student.firstName || "-"}</td>
+                <td>${student.middleName || "-"}</td>
+                <td>${student.lastName || "-"}</td>
+                <td>${student.contact || "-"}</td>
+                <td>${student.address || "-"}</td>
+            `;
+            studentsTableBody.appendChild(row);
+        });
+    } catch (error) {
+        searchResults.textContent = error.message;
+    }
+}
+
+registrationForm.addEventListener("submit", async function(event) {
     event.preventDefault();
 
-    alert("Registration form is ready! Database connection coming soon.");
+    const student = {
+        firstName: document.getElementById("firstName").value.trim(),
+        middleName: document.getElementById("middleName").value.trim(),
+        lastName: document.getElementById("lastName").value.trim(),
+        dob: document.getElementById("dob").value,
+        contact: document.getElementById("contact").value.trim(),
+        address: document.getElementById("address").value.trim()
+    };
 
-    registrationForm.reset();
+    try {
+        const response = await fetch("http://localhost:3000/api/students", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(student)
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.message || "Registration failed");
+        }
+
+        searchResults.textContent = data.message;
+        registrationForm.reset();
+        loadStudents();
+    } catch (error) {
+        searchResults.textContent = error.message;
+    }
 });
 
-// SEARCH BUTTON
-
 searchButton.addEventListener("click", function() {
-    const searchInput = document.getElementById("searchInput");
-    const searchResults = document.getElementById("searchResults");
-
     const searchValue = searchInput.value.trim();
 
     if (searchValue === "") {
         searchResults.textContent = "Please enter a name or registration number.";
+        loadStudents();
         return;
     }
 
-    searchResults.textContent = "Search will be available when the database is connected!";
+    searchResults.textContent = `Searching for: ${searchValue}`;
+    loadStudents(searchValue);
 });
+
+loadStudents();
