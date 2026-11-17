@@ -1,6 +1,16 @@
 
 // BHBI REGISTRATION DEMO
 
+const apiBaseUrl = (() => {
+    const host = window.location.hostname;
+
+    if (host === "localhost" || host === "127.0.0.1") {
+        return "http://localhost:3000";
+    }
+
+    return "https://your-backend-url.com";
+})();
+
 const registrationForm = document.getElementById("registrationForm");
 const searchButton = document.getElementById("searchButton");
 const searchInput = document.getElementById("searchInput");
@@ -9,7 +19,7 @@ const studentsTableBody = document.getElementById("studentsTableBody");
 
 async function loadStudents(search = "") {
     try {
-        const response = await fetch(`http://localhost:3000/api/students?search=${encodeURIComponent(search)}`);
+        const response = await fetch(`${apiBaseUrl}/api/students?search=${encodeURIComponent(search)}`);
         const students = await response.json();
 
         if (!response.ok) {
@@ -57,7 +67,7 @@ registrationForm.addEventListener("submit", async function(event) {
     };
 
     try {
-        const response = await fetch("http://localhost:3000/api/students", {
+        const response = await fetch(`${apiBaseUrl}/api/students`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(student)
@@ -69,7 +79,7 @@ registrationForm.addEventListener("submit", async function(event) {
             throw new Error(data.message || "Registration failed");
         }
 
-        searchResults.textContent = data.message;
+        searchResults.textContent = "Registration Successful | Approved";
         registrationForm.reset();
         loadStudents();
     } catch (error) {

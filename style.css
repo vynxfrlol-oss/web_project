@@ -111,8 +111,15 @@ input:focus {
 
 .search-results {
     margin-top: 18px;
+    min-height: 26px;
+    display: block;
+    padding: 12px 14px;
+    border-radius: 8px;
+    background: #ebf9f4;
+    border: 1px solid #b8e1d2;
     color: #123C46;
     font-weight: bold;
+    line-height: 1.4;
 }
 
 .students-table {

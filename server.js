@@ -6,6 +6,7 @@ const { MongoClient } = require('mongodb');
 
 const app = express();
 const port = process.env.PORT || 3000;
+const host = process.env.HOST || '0.0.0.0';
 const mongoUri = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017';
 
 app.use(cors());
@@ -64,12 +65,18 @@ app.get('/api/students', async (req, res) => {
   }
 
   const search = (req.query.search || '').trim();
+  const numericSearch = Number(search);
   const filter = search
     ? {
         $or: [
-          { registrationNumber: { $regex: search, $options: 'i' } },
+          ...(Number.isInteger(numericSearch) && !Number.isNaN(numericSearch)
+            ? [{ registrationNumber: numericSearch }]
+            : []),
           { firstName: { $regex: search, $options: 'i' } },
-          { lastName: { $regex: search, $options: 'i' } }
+          { middleName: { $regex: search, $options: 'i' } },
+          { lastName: { $regex: search, $options: 'i' } },
+          { contact: { $regex: search, $options: 'i' } },
+          { address: { $regex: search, $options: 'i' } }
         ]
       }
     : {};
@@ -126,6 +133,6 @@ app.post('/api/students', async (req, res) => {
   }
 });
 
-app.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}`);
+app.listen(port, host, () => {
+  console.log(`Server running on http://${host}:${port}`);
 });
