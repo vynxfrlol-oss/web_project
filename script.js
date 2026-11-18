@@ -1,15 +1,9 @@
-
 // BHBI REGISTRATION DEMO
 
-const apiBaseUrl = (() => {
-    const host = window.location.hostname;
-
-    if (host === "localhost" || host === "127.0.0.1") {
-        return "http://localhost:3000";
-    }
-
-    return "https://your-backend-url.com";
-})();
+const apiBaseUrl = window.__API_BASE_URL__ ||
+    ((window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
+        ? "http://localhost:3000"
+        : "");
 
 const registrationForm = document.getElementById("registrationForm");
 const searchButton = document.getElementById("searchButton");
@@ -79,7 +73,9 @@ registrationForm.addEventListener("submit", async function(event) {
             throw new Error(data.message || "Registration failed");
         }
 
+        const successMessage = "your registration is successful, we will update you the status - thanks.";
         searchResults.textContent = "Registration Successful | Approved";
+        alert(successMessage);
         registrationForm.reset();
         loadStudents();
     } catch (error) {
