@@ -17,7 +17,8 @@ async function loadStudents(search = "") {
         const students = await response.json();
 
         if (!response.ok) {
-            throw new Error(students.message || "Failed to load students");
+            const detail = students.error ? `: ${students.error}` : "";
+            throw new Error((students.message || "Failed to load students") + detail);
         }
 
         studentsTableBody.innerHTML = "";

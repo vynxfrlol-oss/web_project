@@ -21,7 +21,9 @@ async function getDb() {
   const mongoUri = process.env.MONGODB_URI;
   if (!mongoUri) throw new Error('MONGODB_URI is not configured');
 
-  client = client || new MongoClient(mongoUri);
+  client = client || new MongoClient(mongoUri, {
+    serverSelectionTimeoutMS: 10000
+  });
   await client.connect();
   db = client.db('studentRegistrationDB');
   return db;
