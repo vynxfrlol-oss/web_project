@@ -18,8 +18,17 @@ function json(statusCode, body) {
 async function getDb() {
   if (db) return db;
 
-  const mongoUri = process.env.MONGODB_URI;
+  let mongoUri = (process.env.MONGODB_URI || '').trim();
   if (!mongoUri) throw new Error('MONGODB_URI is not configured');
+
+  if ((mongoUri.startsWith('"') && mongoUri.endsWith('"')) ||
+      (mongoUri.startsWith("'") && mongoUri.endsWith("'"))) {
+    mongoUri = mongoUri.slice(1, -1).trim();
+  }
+
+  if (!/^mongodb(?:\+srv)?:\/\//i.test(mongoUri)) {
+    throw new Error('MONGODB_URI must start with mongodb:// or mongodb+srv://');
+  }
 
   client = client || new MongoClient(mongoUri, {
     serverSelectionTimeoutMS: 10000
